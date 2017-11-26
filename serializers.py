@@ -42,7 +42,7 @@ class IdField(serializers.CharField):
     def from_native(self, instance):
         return super(IdField, self).from_native(instance.split("/")[-1])
 
-class ProjectSerializer(serializers.ModelSerializer):
+class LDPSerializer(serializers.ModelSerializer):
     descendants = LDPField(many=True, required=False, prefix="http://%s/project/ldpcontainer/"%settings.LDP_DOMAIN, fields=["title"])
     message_set = LDPField(many=True, required=False, prefix="http://%s/message/ldpcontainer/"%settings.LDP_DOMAIN)
     spec_set = LDPField(many=True, required=False, prefix="http://%s/spec/ldpcontainer/"%settings.LDP_DOMAIN)
@@ -52,7 +52,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     state = IdField(required=False)
     
     def __init__(self, *args, **kwargs):
-        super(ProjectSerializer, self).__init__(*args, **kwargs)
+        super(LDPSerializer, self).__init__(*args, **kwargs)
         self.base_fields['@id'] = IdField(source="id", required=False)
         self.base_fields['ldp:contains'] = LDPField(many=True, required=False, source="tasks", prefix="http://%s/project/ldpcontainer/"%settings.LDP_DOMAIN, fields=["title"])
     
